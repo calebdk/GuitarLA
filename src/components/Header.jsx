@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 
-export default function Header({cart, removefromCart, increseQuantity, decreaseQuantity}){
+export default function Header({cart, removefromCart, increseQuantity, decreaseQuantity, clearcart}){
 
     //state derivado porque depende del cart
     //este estate solo se ejecuta cuando el carrito ha sido modificado
@@ -95,7 +95,9 @@ export default function Header({cart, removefromCart, increseQuantity, decreaseQ
                                 )}
 
 
-                                <button className="btn btn-dark w-100 mt-3 p-2">
+                                <button 
+                                    className="btn btn-dark w-100 mt-3 p-2"
+                                    onClick={clearcart}>
                                     Vaciar Carrito
                                 </button>
                             </div>

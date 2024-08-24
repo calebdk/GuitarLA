@@ -11,11 +11,17 @@ function App() {
 
     //estado del carrito de compras -> inicia con un arreglo vacio
     const [cart, setCart] = useState([])
+
+    const MAX_ITEMS = 5
+    const MIN_ITEMS = 1
+
+
     
 
     function addToCart(item){
        const itemExists = cart.findIndex( (guitar) => guitar.id === item.id)
       if(itemExists >= 0){ //existe en el carrito
+        if(cart[itemExists].quantity >= MAX_ITEMS) return
         const updateCart = [...cart]  //sacamos una copia del carrito
         updateCart[itemExists].quantity++  //sacamos la cantidad del carrito
         setCart(updateCart)  //actualizamos el carrito
@@ -24,17 +30,48 @@ function App() {
         item.quantity = 1
         setCart([...cart, item])
       }
-
-       
     }
 
 
+    function removefromCart(id){
+      //console.log('Eliminando...', id)
+      setCart(prevCart => prevCart.filter(guitar => guitar.id !== id))
+    }
+
+    function increseQuantity(id){
+       const updatedCart = cart.map(item => {
+        if(item.id === id && item.quantity < MAX_ITEMS){
+          return {
+            ...item,
+            quantity: item.quantity + 1
+          }
+        }
+        return item
+       })
+      setCart(updatedCart)
+    }
+
+    
+    function decreaseQuantity(id){
+      const downgradeCart = cart.map(item => {
+        if(item.id === id && item.quantity > MIN_ITEMS){
+          return {
+            ...item,
+            quantity: item.quantity - 1
+          }
+        }
+        return item
+      })
+      setCart(downgradeCart)
+    }
 
   return (
     <>
-
     <Header 
       cart={cart}
+      removefromCart={removefromCart}
+      increseQuantity={increseQuantity}
+      decreaseQuantity={decreaseQuantity}
     />
 
 
@@ -50,9 +87,7 @@ function App() {
                     addToCart={addToCart}
                   />
             ))}
-           
         </div>
-      
     </main>
 
 
